@@ -138,7 +138,7 @@ $winget_packages = @(
    #winget_install -Package "$item" }
 
 $PSGallery_install = @(
-    "PSWritePDF", # Little project to create, read, modify, split, merge PDF files
+    "PSWritePDF" # Little project to create, read, modify, split, merge PDF files
 )
 
 $winget_remove = @(
