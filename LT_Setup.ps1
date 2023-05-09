@@ -118,6 +118,7 @@ $winget_packages = @(
     #"chrisant996.Clink",
     "Balena.Etcher",
     "Google.Chrome",
+    "Google.Drive",
     "Opera.Opera",
     "Lexikos.AutoHotkey",
     "Zwift.Zwift",
