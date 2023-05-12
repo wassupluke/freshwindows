@@ -102,6 +102,7 @@ Stop-Process -processName: Explorer -force
 ###              Update Windows            ###
 # https://woshub.com/pswindowsupdate-module/#h2_2
 Install-Module PSWindowsUpdate
+Get-WindowsUpdate -AcceptAll -Install -AutoReboot
 Get-WUInstall
 
 
