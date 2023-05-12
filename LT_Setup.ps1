@@ -18,7 +18,12 @@ function winget_install {
 
 $VerbosePreference = "Continue"
 
-set-ExecutionPolicy -Scope CurrentUser Unrestricted
+if ((Get-ExecutionPolicy -Scope CurrentUser) -notcontains
+    "Unrestricted") {
+    Write-Verbose -Message "Re-run script as administrator"
+    Start-Sleep -Seconds 10
+    Break
+}
 
 $DeviceName = Read-Host -Prompt 'What should we name this device? '
 Write-Verbose -Message "We will automatically reboot at the end of setup."
