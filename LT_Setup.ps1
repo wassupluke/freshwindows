@@ -178,4 +178,4 @@ foreach ($item in $winget_remove) {
     winget_remove -PackageID "$item"
     }
 
-Rename-Computer -NewName $DeviceName
+Rename-Computer -NewName $DeviceName -Restart
