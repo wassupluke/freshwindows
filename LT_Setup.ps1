@@ -5,7 +5,7 @@ function winget_remove {
         [string]$PackageID
     )
     Write-Verbose -Message "Removing $PackageID"
-    winget remove --id "$PackageID"
+    winget remove --id "$PackageID" --Force
 }
 
 function winget_install {
@@ -13,7 +13,7 @@ function winget_install {
         [string]$PackageID
     )
     Write-Verbose -Message "Installing $PackageID"
-    winget install --id "$PackageID" --accept-source-agreements --accept-package-agreements --include-unknown
+    winget install --id "$PackageID" --accept-source-agreements --accept-package-agreements --include-unknown --Force
 }
 
 $VerbosePreference = "Continue"
