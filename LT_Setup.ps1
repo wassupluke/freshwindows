@@ -63,8 +63,6 @@ Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Pe
 # set "OS" system mode to "dark"
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
 # download and set wallpaper
-Push-Location
-Set-Location $env:userprofile '\Pictures\'
 Invoke-WebRequest -Uri "https://i.redd.it/ch2v368i8bta1.png" -UseBasicParsing -OutFile 'ThinkPadThai.png'
 $code = @' 
 using System.Runtime.InteropServices; 
@@ -97,7 +95,6 @@ Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -Value 0 -Type Dword -Force;
 Set-ItemProperty -Path HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -Value 2 -Force;
 Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Value 1 -Type Dword -Force;
-
 
 
 Stop-Process -processName: Explorer -force
