@@ -5,7 +5,7 @@ function winget_remove {
         [string]$PackageID
     )
     Write-Verbose -Message "Removing $PackageID"
-    winget remove --id "$PackageID"https://www.powershellgallery.com/packages/WingetTools/1.7.0/Content/functions%5CInstall-Winget.ps1
+    winget remove --id "$PackageID"
 }
 
 function winget_install {
@@ -80,7 +80,8 @@ namespace Win32{
 '@
 add-type $code
 [Win32.Wallpaper]::SetWallpaper('ThinkPadThai.png')
-Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value 'ThinkPadThai.png' -Force
+$Path = pwd
+Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value $Path 'ThinkPadThai.png' -Force
 rundll32.exe user32.dll, UpdatePerUserSystemParameters 1
 # set accent color per wallpaper
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Type Dword -Force;
@@ -147,7 +148,7 @@ $winget_packages = @(
 )
 
 foreach ($item in $winget_packages) {
-   winget_install -Package "$item"
+   winget_install -PackageID "$item"
    }
 
 $PSGallery_install = @(
