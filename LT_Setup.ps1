@@ -16,19 +16,7 @@ function winget_install {
 
 $VerbosePreference = "Continue"
 
-if ((Get-ExecutionPolicy -Scope CurrentUser) -notcontains
-    "Unrestricted") {
-    Write-Verbose -Message "Re-run script as administrator"
-    Start-Sleep -Seconds 10
-    Break
-}
-
-###      Perhaps stronger than WinGet      ###
-# https://learn.microsoft.com/en-us/powershell/gallery/powershellget/install-powershellget
-Install-Module PowerShellGet -Force -AllowClobber
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-. $profile # not sure if this step is necessary
-Install-Module winget-install -Force
+set-ExecutionPolicy -Scope CurrentUser Unrestricted
 
 
 ###       Disable Mouse Acceleration       ###
@@ -58,14 +46,13 @@ Write-Verbose -Message "Updating registry key to always show all taskbar items..
 $registryPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
 If ( !(Test-Path $registryPath) ) {New-Item -Path $registryPath -Force; }
 New-ItemProperty -Path $registryPath -Name "EnableAutoTray" -PropertyType DWORD -Value 0 -Force
-Stop-Process -processName: Explorer -force
 
 
 ###       Set Dark Theme and Wallpaper      ###
 # set "app" system mode to "dark"
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force; 
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force; 
 # set "OS" system mode to "dark"
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
 # download and set wallpaper
 $wallPath = Join-Path $env:userprofile '\Pictures\ThinkPadThai.png'
 Invoke-WebRequest -Uri "https://i.redd.it/ch2v368i8bta1.png" -UseBasicParsing -OutFile $wallPath
@@ -88,25 +75,36 @@ add-type $code
 Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value $wallPath -Force
 rundll32.exe user32.dll, UpdatePerUserSystemParameters 1
 # set accent color per wallpaper
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Type Dword -Force;
 
 
 ###    Hide Search, Cortana, Task View     ###
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name TraySearchBoxVisible -Value 0 -Type Dword -Force;
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name TraySearchBoxVisibleOnAnyMonitor -Value 0 -Type Dword -Force;
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -Value 0 -Type Dword -Force;
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name TraySearchBoxVisible -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name TraySearchBoxVisibleOnAnyMonitor -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -Value 0 -Type Dword -Force;
+
+Stop-Process -processName: Explorer -force
 
 
 ###              Update Windows            ###
 # https://woshub.com/pswindowsupdate-module/#h2_2
-#Install-Module PSWindowsUpdate
-#Get-WUInstall
+Install-Module PSWindowsUpdate
+Get-WUInstall
+
+
+###      Perhaps stronger than WinGet      ###
+# https://learn.microsoft.com/en-us/powershell/gallery/powershellget/install-powershellget
+Install-Module PowerShellGet -Force -AllowClobber
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+. $profile # not sure if this step is necessary
+Install-Module winget-install -Force
 
 
 ###  Finally, quick Windows Defender scan  ###
-#Write-Verbose -Message "Running Windows Defender quick scan"
-#Start-MpScan -AsJob -ScanType QuickScan
+Write-Verbose -Message "Running Windows Defender quick scan"
+Start-MpScan -AsJob -ScanType QuickScan
 
 
 $winget_packages = @(
@@ -135,8 +133,9 @@ $winget_packages = @(
     "RiotGames.LeagueOfLegends.NA"
 )
 
-#foreach ($item in $winget_packages) {
-   #winget_install -Package "$item" }
+foreach ($item in $winget_packages) {
+   winget_install -Package "$item"
+   }
 
 $PSGallery_install = @(
     "PSWritePDF" # Little project to create, read, modify, split, merge PDF files
@@ -164,5 +163,6 @@ $winget_remove = @(
     "Disney.37853FC22B2CE_6rarf9sa4v8jt"
 )
 
-#foreach ($item in $winget_remove) {
-    #winget_remove -PackageID "$item" }
+foreach ($item in $winget_remove) {
+    winget_remove -PackageID "$item"
+    }
