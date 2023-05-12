@@ -63,8 +63,7 @@ Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Pe
 # set "OS" system mode to "dark"
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
 # download and set wallpaper
-$wallPath = Join-Path $env:userprofile '\Pictures\ThinkPadThai.png'
-Invoke-WebRequest -Uri "https://i.redd.it/ch2v368i8bta1.png" -UseBasicParsing -OutFile $wallPath
+Invoke-WebRequest -Uri "https://i.redd.it/ch2v368i8bta1.png" -UseBasicParsing -OutFile $env:userprofile '\Pictures\ThinkPadThai.png'
 $code = @' 
 using System.Runtime.InteropServices; 
 namespace Win32{ 
@@ -80,8 +79,8 @@ namespace Win32{
  } 
 '@
 add-type $code
-[Win32.Wallpaper]::SetWallpaper($wallPath)
-Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value $wallPath -Force
+[Win32.Wallpaper]::SetWallpaper($env:userprofile '\Pictures\ThinkPadThai.png')
+Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value $env:userprofile '\Pictures\ThinkPadThai.png' -Force
 rundll32.exe user32.dll, UpdatePerUserSystemParameters 1
 # set accent color per wallpaper
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Type Dword -Force;
