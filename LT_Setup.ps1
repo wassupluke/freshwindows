@@ -82,7 +82,6 @@ add-type $code
 [Win32.Wallpaper]::SetWallpaper('ThinkPadThai.png')
 Set-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name WallPaper -Value 'ThinkPadThai.png' -Force
 rundll32.exe user32.dll, UpdatePerUserSystemParameters 1
-Pop-Location
 # set accent color per wallpaper
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Type Dword -Force;
 
