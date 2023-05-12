@@ -1,3 +1,5 @@
+# curl -o setup.ps1 https://raw.githubusercontent.com/wassupluke/freshwindows/main/LT_Setup.ps1
+
 function winget_remove {
     param (
         [string]$PackageID
