@@ -18,6 +18,8 @@ $VerbosePreference = "Continue"
 
 set-ExecutionPolicy -Scope CurrentUser Unrestricted
 
+$DeviceName = Read-Host -Prompt 'What should we name this device? '
+Write-Verbose -Message "We will automatically reboot at the end of setup."
 
 ###       Disable Mouse Acceleration       ###
 Write-Verbose -Message "Disabling enhanced pointer precision."
@@ -145,7 +147,7 @@ $winget_remove = @(
     "Microsoft.YourPhone_8wekyb3d8bbwe",
     "Microsoft.ZuneMusic_8wekyb3d8bbwe",
     "Microsoft.ZuneVideo_8wekyb3d8bbwe",
-    "microsoft.windowscommunicationsapps_8wekyb3d8bbwe",
+    "microsoft.windowscommunicationsapps_8wekyb3d8bbwe",Update LT_Setup.ps1
     "Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe",
     "Microsoft.WindowsMaps_8wekyb3d8bbwe",
     "Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe",
@@ -166,3 +168,5 @@ $winget_remove = @(
 foreach ($item in $winget_remove) {
     winget_remove -PackageID "$item"
     }
+
+Rename-Computer -NewName $DeviceName
